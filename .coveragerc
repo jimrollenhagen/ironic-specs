@@ -1,0 +1,7 @@
+[run]
+branch = True
+source = ironic-specs
+omit = ironic-specs/tests/*,ironic-specs/openstack/*
+
+[report]
+ignore-errors = True
