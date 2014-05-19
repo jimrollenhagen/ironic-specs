@@ -137,6 +137,47 @@ content of the JSON dict and an ability to validate it.
 
 Reuse of existing predefined parameter types is highly encouraged.
 
+Driver API impact
+-----------------
+
+Changes which affects the driver API have a direct effect on all drivers, and
+often have a wider impact on the system. There are several things to consider
+in this section.
+
+* Is it a change to a "core" or "common" API?  
+
+* Can all drivers support it initially, or is it specific to a particular
+  vendor's hardware? 
+
+* How will it be tested in the gate and in third-party CI systems?
+
+* If adding a new interface, explain the intended scope of the proposed
+  interface, what functionality it enables, why it is needed, and whether it is
+  supported by current drivers.
+
+* If adding or changing a method on an existing interface, the impact on
+  existing drivers should be explored.
+
+* Will the new interface or method need to be invoked when the hash ring
+  rebalances, for example to rebuild local state on a new conductor service?
+
+Nova driver impact
+------------------
+
+Chances are, if this change affects the REST or Driver APIs, it will also
+affect the Nova driver in some way. Questions which need to be addressed in
+this section include:
+
+* What is the impact on Nova?
+
+* If this change is enabling new functionality exposed via Nova, this section
+  should cite the relevant components within other Nova drivers that alraedy
+  implement this.
+
+* Ironic and Nova services must be upgradable independently. If the change is
+  affecting existing functionality of the nova.virt.ironic driver, how will an
+  upgrade be performe? How will it be tested?
+
 Security impact
 ---------------
 
@@ -168,12 +209,6 @@ guidelines are a work in progress and are designed to help you identify
 security best practices.  For further information, feel free to reach out
 to the OpenStack Security Group at openstack-security@lists.openstack.org.
 
-Notifications impact
---------------------
-
-Please specify any changes to notifications. Be that an extra notification,
-changes to an existing notification, or removing a notification.
-
 Other end user impact
 ---------------------
 
@@ -182,6 +217,24 @@ feature?
 
 * Does this change have an impact on python-ironicclient? What does the user
   interface there look like?
+
+* Will this require changes in the Horizon panel?
+
+Scalability Impact
+------------------
+
+Describe any potential scalability impact on the system, for example any
+increase in network, RPC, or database traffic, or whether the feature
+requires synchronization across multiple services.
+
+Examples of things to consider here include:
+
+* Additional network calls to internal or external services.
+
+* Additional disk or network traffic that will be required by the feature.
+
+* Any change in the number of physical nodes which can be managed by each
+  conductor service.
 
 Performance Impact
 ------------------
@@ -203,8 +256,8 @@ Examples of things to consider here include:
   can have a profound impact on performance when called in critical sections of
   the code.
 
-* Will the change include any locking, and if so what considerations are there
-  on holding the lock?
+* Will the change include any TaskManager locking, and if so what
+  considerations are there on holding the lock?
 
 * How will the new code be affected if the hash ring rebalances while it is
   running?
