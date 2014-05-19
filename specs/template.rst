@@ -220,7 +220,7 @@ feature?
 
 * Will this require changes in the Horizon panel?
 
-Scalability Impact
+Scalability impact
 ------------------
 
 Describe any potential scalability impact on the system, for example any

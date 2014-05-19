@@ -85,6 +85,16 @@ REST API impact
 The goal of this change is to have no material impact on the REST API data
 structures while making it non-blocking on RPC calls.
 
+Driver API impact
+-----------------
+
+This change should have no impact on the Driver API.
+
+Nova driver impact
+------------------
+
+This change should have no impact on the Nova driver API.
+
 Security impact
 ---------------
 
@@ -112,10 +122,22 @@ Other end user impact
 
 None.
 
+Scalability impact
+------------------
+
+This should have a direct and very positive impact on the overall scalability
+of Ironic. By decoupling the REST API from the conductor service, API requests
+will be serviced faster and with less resources, and the conductor services'
+main thread will have significantly fewer synchronous RPC requests to handle.
+
 Performance Impact
 ------------------
 
-XXX: determine performance impact.
+Aside from the aforementioned scalability impact, this should not have any
+impact on the performance of the ironic-conductor process.
+
+There will be minor additional load on the database as a result of the API
+service requesting information from the DB, instead of from the conductor.
 
 Other deployer impact
 ---------------------
